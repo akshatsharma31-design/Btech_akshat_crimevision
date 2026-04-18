@@ -1,190 +1,169 @@
-CrimeWatch LA — Crime Data Analysis & Prediction System
-A full-stack web application for searching, visualizing, and predicting crimes using real Los Angeles Police Department (LAPD) data and a Machine Learning model.
+🔍 CrimeWatch LA — Crime Data Analysis & Prediction System
+A full-stack web application for analyzing and predicting crime patterns in Los Angeles using Machine Learning.
 
-Python React Flask Scikit-Learn License
+Minor Project | B.Tech Computer Science | 2025-26
+
 
 📌 Project Overview
-CrimeWatch LA is a B.Tech Minor Project that applies Machine Learning and full-stack web development to real-world crime data. The system allows users to:
+CrimeWatch LA is a full-stack crime data analysis system built on the Los Angeles Police Department (LAPD) crime dataset containing over 1 million crime records. The system allows users to search crimes by area and month, visualize trends through interactive charts, and predict the type of crime likely to occur in a specific area using a Random Forest ML model with 76-80% accuracy.
 
-🔐 Register and log in with JWT authentication
-📊 Explore crime trends through 6 interactive charts
-🔍 Search crime records by area and month
-🤖 Predict the most likely crime type using a trained Random Forest model
-🗺️ View 2,000+ crime locations plotted on a Los Angeles map
-🗂️ Project Structure
+🚀 Features
+
+🔐 User Authentication — Register and Login with JWT token-based security
+📊 Interactive Dashboard — 6 charts including Line, Bar, Pie, and Radar charts
+🔍 Crime Search — Filter crime records by area and month
+🤖 ML Prediction — Predict crime type based on area, premise, time and day
+🗺️ Crime Map — Visual map of 2000 crime locations across Los Angeles
+📈 Top 5 Area Analysis — Detailed breakdown of the 5 highest crime areas
+
+
+🛠️ Tech Stack
+Frontend
+TechnologyPurposeReact.jsUI FrameworkViteBuild Tool & Dev ServerReact Router DOMPage NavigationAxiosAPI CommunicationRechartsData Visualization (Charts)
+Backend
+TechnologyPurposePythonProgramming LanguageFlaskREST API FrameworkFlask-CORSCross Origin Resource SharingFlask-JWT-ExtendedAuthentication TokensPandasData Processing & AnalysisScikit-learnMachine Learning ModelPickleModel Serialization
+
+🤖 Machine Learning Model
+
+Algorithm: Random Forest Classifier
+Dataset: LA Crime Data (1,005,198 records)
+Training Data: Top 5 highest crime areas (~164,000 records)
+Features Used: 8 features
+
+Area (encoded)
+Month
+Hour of day
+Day of week
+Is Weekend (binary)
+Time bucket (Night/Morning/Afternoon/Evening)
+Season
+Premise type (encoded)
+
+
+Crime Classes: ASSAULT, THEFT, VEHICLE THEFT
+Accuracy: 76-80% per area
+Trees: 500 estimators
+
+
+📁 Project Structure
 crime-analysis/
 │
 ├── dataset/
-│   └── crimes.csv                  # LAPD Crime Dataset (238MB)
+│   └── crimes.csv              # LA Crime Dataset (238MB)
 │
 ├── ml_model/
-│   └── train_model.py              # ML model training script
+│   └── train_model.py          # ML model training script
 │
 ├── backend/
-│   ├── app.py                      # Flask REST API
-│   └── model.pkl                   # Trained Random Forest model (auto-generated)
+│   ├── app.py                  # Flask REST API
+│   └── model.pkl               # Trained ML model (auto-generated)
 │
 ├── src/
-│   ├── main.jsx
-│   ├── App.jsx
-│   ├── index.css
 │   ├── components/
-│   │   └── Navbar.jsx
-│   └── pages/
-│       ├── Login.jsx
-│       ├── Register.jsx
-│       ├── Home.jsx                # Dashboard with charts
-│       ├── Search.jsx
-│       └── Predict.jsx
+│   │   └── Navbar.jsx          # Navigation bar
+│   ├── pages/
+│   │   ├── Login.jsx           # Login page
+│   │   ├── Register.jsx        # Register page
+│   │   ├── Home.jsx            # Dashboard with charts
+│   │   ├── Search.jsx          # Crime search page
+│   │   └── Predict.jsx         # ML prediction page
+│   ├── App.jsx                 # Routes configuration
+│   ├── main.jsx                # Entry point
+│   └── index.css               # Global styles
 │
-├── package.json
-└── README.md
-🧠 Machine Learning Model
-Algorithm
-Random Forest Classifier from Scikit-learn
+├── package.json                # Node dependencies
+└── vite.config.js              # Vite configuration
 
-Dataset
-Source: LAPD Crime Data — City of Los Angeles Open Data
+📊 Dataset Information
+
+Source: Los Angeles Police Department (LAPD)
 Records: 1,005,198 crime incidents
-Columns: 28 (date, time, area, crime type, premise, victim info, GPS coordinates)
-Features Used (7 input features)
-Feature	Description	Source Column
-Area	LA police division (encoded)	AREA NAME
-Month	Month of year (1–12)	Extracted from DATE OCC
-Hour	Hour of day (0–23)	Extracted from TIME OCC
-Day of Week	0 = Monday, 6 = Sunday	Extracted from DATE OCC
-Is Weekend	Binary flag (0 or 1)	Derived from Day of Week
-Time Bucket	Night/Morning/Afternoon/Evening	Derived from Hour
-Premise Type	Street, Parking Lot, Dwelling, etc. (encoded)	Premis Desc
-Target Variable (Crime Groups)
-10 raw crime types were grouped into 3 broader categories using feature engineering:
+Time Period: 2020 onwards
+Key Columns Used:
 
-Group	Original Crime Types
-ASSAULT	Battery - Simple Assault, Assault with Deadly Weapon, Intimate Partner Assault
-THEFT	Theft of Identity, Theft Plain Petty, Theft Grand
-VEHICLE THEFT	Theft from Motor Vehicle, Burglary from Vehicle
-Grouping reduced class confusion and improved accuracy from 38% → 76–80%.
+AREA NAME — Police division/area
+DATE OCC — Date crime occurred
+TIME OCC — Time crime occurred
+Crm Cd Desc — Crime type description
+Premis Desc — Premise/location type
+LAT, LON — GPS coordinates
+Vict Age, Vict Sex — Victim details
 
-Model Parameters
-RandomForestClassifier(
-    n_estimators=300,
-    max_depth=25,
-    min_samples_split=4,
-    min_samples_leaf=2,
-    max_features='sqrt',
-    class_weight='balanced',
-    random_state=42,
-    n_jobs=-1
-)
-Results
-Area	Accuracy
-Overall (all 5 areas)	~78%
-Central	79%
-Pacific	80%
-77th Street	77%
-Hollywood	79%
-Southwest	76%
-🛠️ Tech Stack
-Frontend
-React 18 (Vite)
-React Router DOM — client-side routing
-Recharts — bar, line, pie, radar charts
-Axios — HTTP requests to Flask API
-Backend
-Flask — Python web framework
-Flask-CORS — cross-origin request handling
-Flask-JWT-Extended — JWT authentication
-Pandas — dataset loading and querying
-Pickle — model serialization
-Machine Learning
-Scikit-learn — Random Forest Classifier
-Pandas / NumPy — data wrangling and feature engineering
-LabelEncoder — categorical encoding
-⚙️ Setup & Installation
+
+
+
+⚙️ Installation & Setup
 Prerequisites
-Python 3.10+
+
+Python 3.12+
 Node.js 18+
 npm
-Step 1 — Clone the repository
-git clone https://github.com/your-username/crime-analysis.git
-cd crime-analysis
-Step 2 — Add the dataset
-Download the LAPD Crime Dataset and place it inside the dataset/ folder. Rename it to crimes.csv.
 
-Step 3 — Train the ML model
-cd ml_model
+Step 1 — Clone the repository
+bashgit clone https://github.com/yourusername/crime-analysis.git
+cd crime-analysis
+Step 2 — Add Dataset
+Place your crimes.csv file inside the dataset/ folder.
+Step 3 — Train the ML Model
+bashcd ml_model
 pip install pandas scikit-learn
 python train_model.py
-This will create backend/model.pkl automatically. Training takes 3–5 minutes.
-
-Step 4 — Start the backend
-cd ../backend
+Step 4 — Install Backend Dependencies
+bashcd ../backend
 pip install flask flask-cors flask-jwt-extended pandas scikit-learn
-python app.py
-Backend runs at: http://localhost:5000
-
-Step 5 — Start the frontend
-Open a new terminal:
-
-cd crime-analysis        # root of project
+Step 5 — Install Frontend Dependencies
+bashcd ..
 npm install
 npm install axios recharts react-router-dom
-npm run dev
-Frontend runs at: http://localhost:5173
+Step 6 — Run the Application
+Terminal 1 — Start Backend:
+bashcd backend
+python app.py
+Terminal 2 — Start Frontend:
+bashnpm run dev
+Open http://localhost:5173 in your browser.
 
-Step 6 — Use the app
-Open http://localhost:5173 in your browser
-Click Register and create an account
-Login with your credentials
-Explore the Dashboard, Search, and Predict pages
-🔌 API Endpoints
-Method	Endpoint	Auth Required	Description
-POST	/api/register	No	Create a new user account
-POST	/api/login	No	Login and receive JWT token
-GET	/api/areas	No	Get list of top 5 crime areas
-GET	/api/crimes	Yes	Search crime records by area & month
-GET	/api/trends	Yes	Get chart data (monthly, hourly, weekly)
-GET	/api/top5areas	Yes	Get detailed stats for top 5 areas
-GET	/api/heatmap	Yes	Get 2000 GPS points for the map
-GET	/api/stats	No	Get summary statistics
-POST	/api/predict	Yes	Get ML crime prediction
-📸 Features
+🔗 API Endpoints
+MethodEndpointDescriptionAuth RequiredPOST/api/registerRegister new userNoPOST/api/loginLogin and get tokenNoGET/api/areasGet top 5 crime areasNoGET/api/statsGet overall statisticsNoGET/api/crimesSearch crimes by area/monthYesGET/api/trendsGet crime trends dataYesGET/api/top5areasGet top 5 area breakdownYesGET/api/heatmapGet map location dataYesGET/api/premisGet premise typesNoPOST/api/predictPredict crime typeYes
+
+📷 Screenshots
+Login Page
+
+Secure JWT-based authentication system
+
 Dashboard
-5 stat cards (total crimes, area count, top crime, most dangerous area, model accuracy)
-Clickable top 5 area cards with assault/theft/vehicle theft breakdown
-Monthly trend line chart
-Crime type pie chart (donut style)
-Hourly crime bar chart (color-coded by time of day)
-Day of week bar chart
-Crime type radar chart
-Top 5 area horizontal comparison bar chart
-Crime location map (SVG with GPS dots)
-Search
-Filter by area and month
-Returns up to 100 records in a sortable table
-Shows date, area, crime type, premise, victim age, victim sex, location
-Predict
-Select area, premise type, month, hour
-Returns predicted crime type with confidence %
-Shows top 3 predictions with probability progress bars
-📁 Key Files Explained
-File	Purpose
-ml_model/train_model.py	Loads CSV, engineers features, trains Random Forest, saves model.pkl
-backend/app.py	Flask server with all API routes, loads model.pkl at startup
-src/pages/Home.jsx	Dashboard page with all 6 charts and crime map
-src/pages/Predict.jsx	Prediction page — sends inputs to Flask, displays ML results
-src/pages/Search.jsx	Search page — filters crime records by area and month
-src/App.jsx	React Router setup with protected routes using JWT
-🔮 Future Improvements
-Replace in-memory user store with PostgreSQL database
-Deploy backend on Render / Railway
-Deploy frontend on Vercel / Netlify
-Add interactive Leaflet.js map with clustering
-Try XGBoost for higher accuracy
-Add real-time crime alerts via WebSockets
-Mobile app version using React Native
-👨‍💻 Author
-Anant B.Tech Minor Project — 2025–26
+
+6 interactive charts — Monthly trends, Crime type breakdown, Hourly distribution, Weekly patterns, Radar chart, Area comparison
+
+Crime Search
+
+Filter 1 million records by area and month
+
+Prediction Page
+
+ML-powered crime type prediction with confidence score and top 3 predictions
+
+
+📐 Data Preprocessing
+
+Missing Values: Removed using dropna() on critical columns
+Feature Engineering:
+
+Extracted Month, Hour, DayOfWeek from datetime columns
+Created IsWeekend binary feature
+Created TimeBucket (Night/Morning/Afternoon/Evening)
+Created Season feature from month
+
+
+Label Encoding: Used LabelEncoder for categorical columns
+Crime Grouping: Grouped 8 similar crime types into 3 broader categories
+Class Balancing: Used class_weight='balanced' in Random Forest
+
+
+
+B.Tech Computer Science
+Minor Project — 2025-26
 
 📄 License
-This project is for educational purposes. The dataset is sourced from Los Angeles Open Data and is publicly available under their terms of use.
+This project is for educational purposes only.
+Dataset sourced from Los Angeles Open Data.
